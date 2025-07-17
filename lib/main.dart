@@ -53,17 +53,23 @@ class PeoplePage extends StatefulWidget {
 
 class _PeoplePageState extends State<PeoplePage> {
   final TextEditingController _controller = TextEditingController();
-  
-  final List _persons = [];
-  
+  Color _color = Colors.blue;
+
+  final List _persons = <Person>[];
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Expanded(
-        child: ListView.builder(
-          itemCount: _persons.length,
-          itemBuilder: (context, index) => Person(name: _persons[index]),
-        ),
+      body: ListView.builder(
+        itemCount: _persons.length,
+        itemBuilder: (context, index) => _persons[index],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -95,25 +101,22 @@ class _PeoplePageState extends State<PeoplePage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      Text(
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: _color,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
                         "P1",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 50,
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
                 Expanded(
@@ -125,8 +128,16 @@ class _PeoplePageState extends State<PeoplePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            for (Color color in PeoplePage.defaultColors)
-                              ColorButton(color: color),
+                            for (Color defaultColor in PeoplePage.defaultColors)
+                              ColorButton(
+                                color: defaultColor,
+                                groupColor: _color,
+                                onChanged: (Color color) {
+                                  setState(() {
+                                    _color = color;
+                                  });
+                                },
+                              ),
                           ],
                         ),
                       ),
@@ -151,7 +162,16 @@ class _PeoplePageState extends State<PeoplePage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  _persons.add(
+                                    Person(
+                                      name: _controller.text,
+                                      color: _color,
+                                    ),
+                                  );
+                                });
+                              },
                               icon: const Icon(Icons.add),
                             ),
                           ),

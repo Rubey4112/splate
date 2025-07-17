@@ -7,13 +7,24 @@ onChanged
  */
 class ColorButton extends StatelessWidget {
   final Color color;
+  final Color groupColor;
+  final ValueChanged<Color> onChanged;
 
-  const ColorButton({required this.color, super.key});
+  const ColorButton({
+    required this.color,
+    required this.groupColor,
+    required this.onChanged,
+    super.key,
+  });
+
+  void _handleTap() {
+    onChanged(color);
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => 0,
+      onTap: _handleTap,
       child: Container(
         height: 30,
         width: 30,
