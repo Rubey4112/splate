@@ -29,6 +29,9 @@ class ColorButton extends StatelessWidget {
         height: 30,
         width: 30,
         decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+        child: color == groupColor
+            ? Icon(Icons.check, color: Colors.white, size: 30)
+            : null,
       ),
     );
   }
