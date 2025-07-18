@@ -40,7 +40,7 @@ class PeoplePage extends StatefulWidget {
 
 class _PeoplePageState extends State<PeoplePage> {
   final TextEditingController _controller = TextEditingController();
-  Color _color = Colors.blue;
+  Color _color = Color(0xff0061FD);
 
   final List _persons = <Person>[];
 
@@ -83,91 +83,94 @@ class _PeoplePageState extends State<PeoplePage> {
           ),
           child: SizedBox(
             height: 150,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: _color,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "P1",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 50,
+            child: StatefulBuilder(
+              builder: (context, setModalState) => Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: _color,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          "P1",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 50,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            for (Color defaultColor in PeoplePage.defaultColors)
-                              ColorButton(
-                                color: defaultColor,
-                                groupColor: _color,
-                                onChanged: (Color color) {
-                                  setState(() {
-                                    _color = color;
-                                  });
-                                },
-                              ),
-                          ],
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              for (Color defaultColor
+                                  in PeoplePage.defaultColors)
+                                ColorButton(
+                                  color: defaultColor,
+                                  groupColor: _color,
+                                  onChanged: (Color color) {
+                                    setModalState(() => _color = color);
+                                  },
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextField(
-                                autofocus: true,
-                                controller: _controller,
-                                decoration: InputDecoration(
-                                  hintText: 'Name',
-                                  suffixIcon: IconButton(
-                                    onPressed: _controller.clear,
-                                    icon: Icon(Icons.clear),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  autofocus: true,
+                                  controller: _controller,
+                                  decoration: InputDecoration(
+                                    hintText: 'Name',
+                                    suffixIcon: IconButton(
+                                      onPressed: _controller.clear,
+                                      icon: Icon(Icons.clear),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _persons.add(
-                                    Person(
-                                      name: _controller.text,
-                                      color: _color,
-                                    ),
-                                  );
-                                });
-                              },
-                              icon: const Icon(Icons.add),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _persons.add(
+                                      Person(
+                                        name: _controller.text,
+                                        color: _color,
+                                      ),
+                                    );
+                                  });
+                                },
+                                icon: const Icon(Icons.add),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
