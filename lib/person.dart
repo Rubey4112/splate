@@ -6,6 +6,13 @@ class Person extends StatelessWidget {
   final Color color;
   const Person({required this.name, required this.color, super.key});
 
+  String _usernameIcon() {
+    List<String> stringList = name.split(' ');
+    return stringList.length > 1
+        ? (stringList.first[0] + stringList.last[0]).toUpperCase()
+        : stringList.first[0].toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,7 +28,13 @@ class Person extends StatelessWidget {
                   Flexible(
                     flex: 1,
                     child: Container(
-                      color: Colors.blueGrey,
+                      decoration: ShapeDecoration(
+                        color: Colors.blueGrey,
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+
                       child: Center(child: Text(name)),
                     ),
                   ),
@@ -44,7 +57,7 @@ class Person extends StatelessWidget {
                 decoration: BoxDecoration(color: color, shape: BoxShape.circle),
                 child: Center(
                   child: Text(
-                    "P1",
+                    _usernameIcon(),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
                 ),
