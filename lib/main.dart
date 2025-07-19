@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:splate/providers/people_list_provider.dart';
 import 'package:splate/person.dart';
-import 'package:splate/colorbutton.dart';
+import 'package:splate/color_button.dart';
 
 void main() {
   runApp(SplateApp());
@@ -42,8 +44,6 @@ class _PeoplePageState extends State<PeoplePage> {
   final TextEditingController _controller = TextEditingController();
   Color _color = Color(0xff0061FD);
 
-  final List _persons = <Person>[];
-
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -53,20 +53,24 @@ class _PeoplePageState extends State<PeoplePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: _persons.length,
-        itemBuilder: (context, index) => _persons[index],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            Spacer(),
-            TextButton(
-              onPressed: () => _showAddPeopleBottomSheet(context),
-              child: Text("Add People"),
-            ),
-          ],
+    return ChangeNotifierProvider(
+      create: (context) => PeopleListProvider(),
+      child: Scaffold(
+        body: ListView.builder(
+          itemCount: context.watch<PeopleListProvider>().length,
+          itemBuilder: (context, index) =>
+              context.watch<PeopleListProvider>().getPerson(index),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            children: [
+              Spacer(),
+              TextButton(
+                onPressed: () => _showAddPeopleBottomSheet(context),
+                child: Text("Add People"),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -152,14 +156,12 @@ class _PeoplePageState extends State<PeoplePage> {
                               ),
                               child: IconButton(
                                 onPressed: () {
-                                  setState(() {
-                                    _persons.add(
-                                      Person(
-                                        name: _controller.text,
-                                        color: _color,
-                                      ),
-                                    );
-                                  });
+                                  context.read<PeopleListProvider>().add(
+                                    Person(
+                                      name: _controller.text,
+                                      color: _color,
+                                    ),
+                                  );
                                 },
                                 icon: const Icon(Icons.add),
                               ),
