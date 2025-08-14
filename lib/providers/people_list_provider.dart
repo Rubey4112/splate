@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:splate/person.dart';
+import 'package:splate/model/person.dart';
 
 class PeopleListProvider extends ChangeNotifier {
   final List _persons = <Person>[];

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:splate/providers/people_list_provider.dart';
-import 'package:splate/person.dart';
-import 'package:splate/color_button.dart';
+import 'package:splate/pages/core/widgets/person_tile.dart';
+import 'package:splate/pages/people_page/widgets/color_button.dart';
+import 'package:splate/model/person.dart';
 
 class PeoplePage extends StatefulWidget {
   const PeoplePage({super.key});
@@ -35,24 +37,39 @@ class _PeoplePageState extends State<PeoplePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Add People'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pushNamed(context, '/calculation_page'),
+            child: Text('Next'),
+          ),
+        ],
+      ),
       body: ListView.builder(
         itemCount: context.watch<PeopleListProvider>().length,
         itemBuilder: (context, index) {
-          return Dismissible(
-            key: UniqueKey(),
-            direction: DismissDirection.endToStart,
-            onDismissed: (direction) {
-              context.read<PeopleListProvider>().removeAt(index);
-            },
-            background: Container(
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Container(
+              clipBehavior: Clip.antiAlias,
               decoration: ShapeDecoration(
-                color: Colors.red,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Dismissible(
+                key: UniqueKey(),
+                direction: DismissDirection.endToStart,
+                onDismissed: (direction) {
+                  context.read<PeopleListProvider>().removeAt(index);
+                },
+                background: Container(color: Colors.red),
+                child: PersonTile(
+                  person: context.watch<PeopleListProvider>().getPerson(index),
                 ),
               ),
             ),
-            child: context.watch<PeopleListProvider>().getPerson(index),
           );
         },
       ),
