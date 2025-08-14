@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:splate/model/person.dart';
+import 'package:splate/pages/core/widgets/person_tile/widgets/foods_list.dart';
 
 // TODO Implement Draggable
 class PersonTile extends StatelessWidget {
@@ -7,42 +9,16 @@ class PersonTile extends StatelessWidget {
 
   const PersonTile({required this.person, super.key});
 
-  String _usernameIcon() {
-    List<String> stringList = person.name.split(' ');
-    return stringList.length > 1
-        ? (stringList.first[0] + stringList.last[0]).toUpperCase()
-        : stringList.first[0].toUpperCase();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 110,
       color: const Color(0xFFE3E9ED),
       child: Row(
         children: [
           Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: person.color,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      _usernameIcon(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              PersonIcon(person: person),
               Text(
                 '\$${person.totalCost()}',
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -56,20 +32,51 @@ class PersonTile extends StatelessWidget {
                   flex: 1,
                   child: Container(
                     color: const Color.fromARGB(255, 215, 223, 230),
-                    child: Center(child: Text(person.name)),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(person.name),
+                    ),
                   ),
                 ),
                 Expanded(
                   flex: 3,
                   child: Container(
                     color: Color.fromARGB(255, 232, 236, 238),
-                    alignment: Alignment.center,
+                    child: FoodsList(foods: person.foods),
                   ),
                 ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class PersonIcon extends StatelessWidget {
+  const PersonIcon({super.key, required this.person});
+
+  final Person person;
+
+  String _usernameIcon() {
+    List<String> stringList = person.name.split(' ');
+    return stringList.length > 1
+        ? (stringList.first[0] + stringList.last[0]).toUpperCase()
+        : stringList.first[0].toUpperCase();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: CircleAvatar(
+        radius: 32,
+        backgroundColor: person.color,
+        child: Text(
+          _usernameIcon(),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+        ),
       ),
     );
   }

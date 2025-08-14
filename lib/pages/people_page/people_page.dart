@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:splate/providers/people_list_provider.dart';
-import 'package:splate/pages/core/widgets/person_tile.dart';
+import 'package:splate/pages/core/widgets/person_tile/person_tile.dart';
 import 'package:splate/pages/people_page/widgets/color_button.dart';
 import 'package:splate/model/person.dart';
 

@@ -11,8 +11,8 @@ class FoodDraggable extends StatelessWidget {
     return Draggable<Food>(
       data: food,
       feedback: Material(
-        child: Container(
-          color: Colors.blue,
+        child: CircleAvatar(
+          backgroundColor: Colors.blue,
           child: Text(food.icon, style: TextStyle(fontSize: size)),
         ),
       ),
@@ -20,7 +20,7 @@ class FoodDraggable extends StatelessWidget {
         draggable.feedbackOffset.dx + size / 2,
         draggable.feedbackOffset.dy + size / 2,
       ),
-      childWhenDragging: Container(),
+      childWhenDragging: Container(width: 140, color: Colors.white),
       child: Container(
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
@@ -28,13 +28,11 @@ class FoodDraggable extends StatelessWidget {
           ),
           color: Colors.white,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(food.icon, style: TextStyle(fontSize: size)),
-            const SizedBox(width: 8),
-            Text('\$${food.cost}', style: TextStyle(fontSize: size)),
-          ],
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minWidth: 10, minHeight: 140),
+          child: Center(
+            child: Text(food.icon, style: TextStyle(fontSize: size)),
+          ),
         ),
       ),
     );

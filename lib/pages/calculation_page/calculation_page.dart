@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splate/providers/people_list_provider.dart';
-import 'package:splate/pages/core/widgets/person_tile.dart';
+import 'package:splate/pages/core/widgets/person_tile/person_tile.dart';
 import 'package:splate/pages/calculation_page/widgets/food_draggable.dart';
 import 'package:splate/model/food.dart';
 import 'package:splate/pages/calculation_page/widgets/keypad.dart';
@@ -42,7 +42,10 @@ class _CalculationPageState extends State<CalculationPage> {
               ),
               child: DragTarget<Food>(
                 onAcceptWithDetails: (details) {
-                  // Handle food item drop
+                  _itemDroppedOnPeople(
+                    food: details.data,
+                    person: context.read<PeopleListProvider>().getPerson(index),
+                  );
                 },
                 builder: (context, candidateItems, rejectedItems) {
                   return PersonTile(
@@ -68,7 +71,7 @@ class _CalculationPageState extends State<CalculationPage> {
     );
   }
 
-  _itemDroppedOnPeople({required Food food, required Person person}) {
+  void _itemDroppedOnPeople({required Food food, required Person person}) {
     setState(() {
       person.foods.add(food);
     });
